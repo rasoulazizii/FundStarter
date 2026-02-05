@@ -6,8 +6,8 @@ class CampaignSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campaign
         fields = [
-            'title', 'description', 'target_amount',
-            'current_amount', 'deadline',
+            'id', 'owner', 'title', 'description', 
+            'target_amount', 'current_amount', 'deadline', 'created_at'
         ]
         
         read_only_fields = [
