@@ -18,9 +18,7 @@ class CampaignSerializer(serializers.ModelSerializer):
 class DonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donation
-        fields = [
-            '__all__',
-        ]
+        fields = '__all__'
         read_only_fields = [
             'backer'
         ]
