@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Campaign, Donation
+from django.utils import timezone
 
 
 class CampaignSerializer(serializers.ModelSerializer):
@@ -22,4 +23,20 @@ class DonationSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'backer'
         ]
+    
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError('amount most be greater than zero')
+        return value
+
+    def validate(self, attrs):
+        campaign = attrs['campaign']
+        user = self.context['request'].user
+
+        if campaign.owner == user:
+            raise serializers.ValidationError('you can not donta your own campaign')
         
+        if campaign.deadline < timezone.now():
+            raise serializers.ValidationError('this campaign has ended.')
+        
+        return attrs
