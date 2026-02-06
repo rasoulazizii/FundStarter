@@ -5,14 +5,19 @@ from .serializers import CampaignSerializer, DonationSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
-
+from rest_framework import filters
 
 
 class CampaignViewSet(ModelViewSet):
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-
+    filter_backends = [
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    ]
+    search_fields = ['title', 'description'] 
+    ordering_fields = ['target_amount', 'created_at', 'deadline']
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
