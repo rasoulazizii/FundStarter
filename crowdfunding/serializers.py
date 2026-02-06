@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Campaign
+from .models import Campaign, Donation
 
 
 class CampaignSerializer(serializers.ModelSerializer):
@@ -14,3 +14,14 @@ class CampaignSerializer(serializers.ModelSerializer):
             'owner', 'created_at'
         ]
 
+
+class DonationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
+        fields = [
+            '__all__',
+        ]
+        read_only_fields = [
+            'backer'
+        ]
+        
