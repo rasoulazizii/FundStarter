@@ -24,12 +24,16 @@ class CampaignSerializer(serializers.ModelSerializer):
 
 
 class DonationSerializer(serializers.ModelSerializer):
+    campaign_title = serializers.ReadOnlyField(source='campaign.title')
+    backer_email = serializers.ReadOnlyField(source='backer.email')
+
     class Meta:
         model = Donation
-        fields = '__all__'
-        read_only_fields = [
-            'backer'
+        fields = [
+            'id', 'campaign', 'campaign_title', 
+            'backer', 'backer_email', 'amount', 'created_at'
         ]
+        read_only_fields = ['backer']
     
     def validate_amount(self, value):
         if value <= 0:
