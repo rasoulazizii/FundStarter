@@ -20,10 +20,20 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),
-    path('v1/api/crowdfunding/', include('crowdfunding.urls'))
+    path('v1/api/crowdfunding/', include('crowdfunding.urls')),
+
+    path('v1/api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('v1/api/docs/', SpectacularSwaggerView.as_view(url_name='shcema'), name='swagger-ui'),
+    path('v1/api/redoc/', SpectacularRedocView.as_view(url_name='schema'),
+         name='redoc'),
 ]
