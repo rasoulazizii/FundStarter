@@ -4,16 +4,23 @@ from django.utils import timezone
 
 
 class CampaignSerializer(serializers.ModelSerializer):
+    progress_percentage = serializers.SerializerMethodField()
+    owner = serializers.ReadOnlyField(source='owner.email')
+
     class Meta:
         model = Campaign
         fields = [
-            'id', 'owner', 'title', 'description', 
-            'target_amount', 'current_amount', 'deadline', 'created_at'
+            'id', 'owner', 'title', 'description', 'image',
+            'target_amount', 'current_amount', 'progress_percentage', 
+            'deadline', 'created_at'
         ]
-        
-        read_only_fields = [
-            'owner', 'created_at'
-        ]
+        read_only_fields = ['owner', 'current_amount', 'created_at']
+
+    def get_progress_percentage(self, obj):
+        if obj.target_amount > 0:
+            percentage = (obj.current_amount / obj.target_amount) * 100
+            return round(percentage, 2)
+        return 0
 
 
 class DonationSerializer(serializers.ModelSerializer):
