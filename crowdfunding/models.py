@@ -7,6 +7,7 @@ class Campaign(models.Model):
     owner = models.ForeignKey(User, on_delete= models.CASCADE, related_name='campaigns')
     title = models.CharField(max_length=220)
     description = models.TextField()
+    image = models.ImageField(upload_to='campaigns/', null=True, blank=True)
     target_amount = models.DecimalField(max_digits=10, decimal_places=2)
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     deadline = models.DateTimeField()
